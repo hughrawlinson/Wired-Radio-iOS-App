@@ -21,6 +21,8 @@
 		1E53C1B418D74622008544AF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E53C19618D74622008544AF /* UIKit.framework */; };
 		1E53C1BC18D74622008544AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E53C1BA18D74622008544AF /* InfoPlist.strings */; };
 		1E53C1BE18D74622008544AF /* Wired_RadioTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E53C1BD18D74622008544AF /* Wired_RadioTests.m */; };
+		1E53C1CA18D75590008544AF /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 1E53C1C918D75590008544AF /* play.png */; };
+		1E53C1CE18D75A24008544AF /* wiredLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1E53C1CD18D75A24008544AF /* wiredLogo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		1E53C1B918D74622008544AF /* Wired RadioTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Wired RadioTests-Info.plist"; sourceTree = "<group>"; };
 		1E53C1BB18D74622008544AF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1E53C1BD18D74622008544AF /* Wired_RadioTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Wired_RadioTests.m; sourceTree = "<group>"; };
+		1E53C1C918D75590008544AF /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		1E53C1CD18D75A24008544AF /* wiredLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wiredLogo.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +130,8 @@
 		1E53C19918D74622008544AF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1E53C1CD18D75A24008544AF /* wiredLogo.png */,
+				1E53C1C918D75590008544AF /* play.png */,
 				1E53C19A18D74622008544AF /* Wired Radio-Info.plist */,
 				1E53C19B18D74622008544AF /* InfoPlist.strings */,
 				1E53C19E18D74622008544AF /* main.m */,
@@ -228,6 +234,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E53C1CA18D75590008544AF /* play.png in Resources */,
+				1E53C1CE18D75A24008544AF /* wiredLogo.png in Resources */,
 				1E53C1AB18D74622008544AF /* Images.xcassets in Resources */,
 				1E53C19D18D74622008544AF /* InfoPlist.strings in Resources */,
 				1E53C1A618D74622008544AF /* Main.storyboard in Resources */,
