@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <Parse/Parse.h>
 
 @implementation AppDelegate
 
@@ -14,6 +15,9 @@
 {
     // Override point for customization after application launch.
     return YES;
+    [Parse setApplicationId:@"HQdmgreg0rWdfO3zpRmNkIYoBEQB5kVk1T3T0aIm"
+                  clientKey:@"9i6IzHfVjicz6t58y0c0lA65M5Fg2o6daCeErA1V"];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

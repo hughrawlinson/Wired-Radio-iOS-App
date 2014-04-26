@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreAudio/CoreAudioTypes.h>
 #import <AVFoundation/AVFoundation.h>
+#import "STTwitter/STTwitter.h"
 
 @interface ViewController : UIViewController <AVAudioPlayerDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -20,7 +21,8 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *playButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *pauseButton;
 @property (strong, nonatomic) IBOutlet UITableView *tweetTable;
-@property (strong, nonatomic) NSArray * tweets;
+@property (strong, nonatomic) NSArray *tweets;
+@property (strong, nonatomic) STTwitterAPI *twitter;
 
 -(IBAction) playAudio:(id)sender;
 -(IBAction) pauseAudio:(id)sender;

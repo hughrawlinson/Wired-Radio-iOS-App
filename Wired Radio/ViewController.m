@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "STTwitter/STTwitter.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface ViewController ()
@@ -27,40 +26,75 @@
     _isPlaying = YES;
     NSError *sessionError = nil;
     
+    self.tweetTable.backgroundColor = [UIColor blackColor];
+    self.tweetTable.opaque = YES;
+    
     MPVolumeView* vv = [[MPVolumeView alloc] initWithFrame: CGRectMake(0, 0, 260, 20)];
     UIBarButtonItem* b = [[UIBarButtonItem alloc] initWithCustomView: vv];
     
     NSMutableArray *toolbarButtons = [[self.toolbar items] mutableCopy];
     [toolbarButtons insertObject:b atIndex:1];    // vary this index to put in diff spots in toolbar
     [self.toolbar setItems:toolbarButtons];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
     
     [[AVAudioSession sharedInstance] setDelegate:self];
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&sessionError];
-    STTwitterAPI *twitter = [STTwitterAPI twitterAPIAppOnlyWithConsumerKey:@"Urr3pJs8q8eG2sOR4EMcQ" consumerSecret:@"ob5eSMtMPP4440s7a69pi6qkLtFdP5puG8RxGCXLac"];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&sessionError];
+    [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&sessionError];
+    [[AVAudioSession sharedInstance] setActive:YES error:&sessionError];
+    _twitter = [STTwitterAPI twitterAPIAppOnlyWithConsumerKey:@"Urr3pJs8q8eG2sOR4EMcQ" consumerSecret:@"ob5eSMtMPP4440s7a69pi6qkLtFdP5puG8RxGCXLac"];
+    [_audioPlayer setVolume:1.0];
     
-    [twitter verifyCredentialsWithSuccessBlock:^(NSString *bearerToken) {
-        
+    [_twitter verifyCredentialsWithSuccessBlock:^(NSString *bearerToken) {
         NSLog(@"Access granted with %@", bearerToken);
-        
-        [twitter getUserTimelineWithScreenName:@"wiredgold" successBlock:^(NSArray *statuses) {
-            _tweets = statuses;
-//            for(int i = 0; i < _tweets.count; i++){
-//                NSLog(@"-- status%i: %@",i, [_tweets[i] objectForKey:@"text"]);
-//            }
-            
-            NSLog(@"%i",[_tweets count]);
-            _tweetTable.backgroundColor = [UIColor colorWithWhite:0 alpha:1];
-            _tweetTable.hidden = NO;
-            [_tweetTable reloadData];
-            [_loading stopAnimating];
-        } errorBlock:^(NSError *error) {
-            NSLog(@"-- error: %@", error);
-        }];
-        
+        [self refreshTweets];
     } errorBlock:^(NSError *error) {
         NSLog(@"-- error %@", error);
     }];
+}
+
+- (void) refreshTweets{
+    [_twitter getUserTimelineWithScreenName:@"wiredgold" successBlock:^(NSArray *statuses) {
+        _tweets = statuses;
+        //            for(int i = 0; i < _tweets.count; i++){
+        //                NSLog(@"-- status%i: %@",i, [_tweets[i] objectForKey:@"text"]);
+        //            }
+        
+        NSLog(@"%lu",(unsigned long)[_tweets count]);
+        _tweetTable.backgroundColor = [UIColor colorWithWhite:0 alpha:1];
+        _tweetTable.hidden = NO;
+        [_tweetTable reloadData];
+        [_loading stopAnimating];
+    } errorBlock:^(NSError *error) {
+        NSLog(@"-- error: %@", error);
+    }];
+}
+
+// If the user pulls out he headphone jack, stop playing.
+- (void)audioRouteChangeListenerCallback:(NSNotification*)notification
+{
+    NSDictionary *interuptionDict = notification.userInfo;
+    
+    NSInteger routeChangeReason = [[interuptionDict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
+    
+    switch (routeChangeReason) {
+            
+        case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+            NSLog(@"AVAudioSessionRouteChangeReasonNewDeviceAvailable");
+            NSLog(@"Headphone/Line plugged in");
+            break;
+            
+        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+            NSLog(@"AVAudioSessionRouteChangeReasonOldDeviceUnavailable");
+            NSLog(@"Headphone/Line was pulled. Stopping player....");
+            [self pauseAudio:NULL];
+            break;
+            
+        case AVAudioSessionRouteChangeReasonCategoryChange:
+            // called at start - also when other audio wants to play
+            NSLog(@"AVAudioSessionRouteChangeReasonCategoryChange");
+            break;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -198,7 +232,7 @@
     cell.backgroundColor = [UIColor colorWithWhite:0 alpha:1];
     cell.textLabel.numberOfLines = 3;
     cell.textLabel.font = [UIFont systemFontOfSize:15];
-    cell.textLabel.textColor = [UIColor colorWithRed:255/255.0f green:207/255.0f blue:20/255.0f alpha:1.0f];
+    cell.textLabel.textColor = [UIColor colorWithWhite:1.0 alpha:1.0];
     
     cell.textLabel.text = [[_tweets objectAtIndex:indexPath.row] objectForKey:@"text"];
     
